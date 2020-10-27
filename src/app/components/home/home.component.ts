@@ -1,7 +1,9 @@
+import { UserService } from './../../service/user.service';
+import { User } from './../../model/user';
 import { Image } from './../../model/image';
 import { ImageService } from './../../service/image.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -15,23 +17,42 @@ export class HomeComponent implements OnInit {
   image: Image = null
   fileToUpload: File = null;
   src: any;
-  constructor(private imageService : ImageService) { }
+  user: User;
+  
+  constructor(private imageService : ImageService,
+              private userService: UserService) { }
 
   ngOnInit(): void {
-  }
-  
-  uploadImage(files: FileList): void {
-    this.fileToUpload = files.item(0)
-    const reader = new FileReader();
-    reader.readAsDataURL(this.fileToUpload);
-    this.imageService.createImage(this.fileToUpload).subscribe(res => {
-      this.image = res
-      this.src = reader.result
-    }, (err) => {
+    this.ProfileForm = new FormGroup({
+      username: new FormControl(),
+      avatar: new FormControl()
+    });
+    this.userService.getUserProfile(3).subscribe(res => {
+      this.user = res
+      console.log(this.user)
+    }, err => {
       console.log(err)
     })
   }
+  
+   uploadImage(files: FileList): void {
+   this.fileToUpload = files.item(0)
+   const reader = new FileReader();
+    reader.readAsDataURL(this.fileToUpload);    
+      this.imageService.createImage(this.fileToUpload).subscribe(res => {
+        this.src = reader.result
+        console.log(this.src)
+        this.ProfileForm.get("avatar").setValue(res)
+      }, (err) => {
+        console.log(err)
+      })
+  }
   onSubmit(): void {
-
+    console.log(this.ProfileForm.value)
+    this.userService.createUser(this.ProfileForm.value).subscribe(res => {
+      console.log(res)
+    }, err => {
+      console.log("err")
+    })
   }
   }

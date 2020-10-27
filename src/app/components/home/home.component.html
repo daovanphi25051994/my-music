@@ -2,10 +2,14 @@
       <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
        <input type="file" (change)="uploadImage($event.target.files)">
         <span>Ảnh</span>
-        <div *ngIf="image != null">
-          <h2>co data</h2>
+        <div>
           <img [src]="src" alt="faf">
         </div>
+       
+          <img [src]=" 'data:image/png;base64,' + user.avatar.data" alt="faf">
+        
+        
+        <input type="text" [ngModel]="user.username" formControlName="username">
         <div>
           <button type="submit">Đăng</button>
         </div>
