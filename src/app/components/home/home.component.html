@@ -1,0 +1,14 @@
+<div>
+      <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
+       <input type="file" (change)="uploadImage($event.target.files)">
+        <span>Ảnh</span>
+        <div *ngIf="image != null">
+          <h2>co data</h2>
+          <img [src]="src" alt="faf">
+        </div>
+        <div>
+          <button type="submit">Đăng</button>
+        </div>
+      </form>
+  </div>
+  
