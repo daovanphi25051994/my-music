@@ -1,18 +1,20 @@
 <div>
-      <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
-       <input type="file" (change)="uploadImage($event.target.files)">
-        <span>Ảnh</span>
-        <div>
-          <img [src]="src" alt="faf">
-        </div>
-       
-          <img [src]=" 'data:image/png;base64,' + user.avatar.data" alt="faf">
-        
-        
-        <input type="text" [ngModel]="user.username" formControlName="username">
-        <div>
-          <button type="submit">Đăng</button>
-        </div>
-      </form>
+  <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
+    <input type="file" (change)="uploadImage($event.target.files)">
+    <span>Ảnh</span>
+    <div [ng-if]="src">
+      gag
+      <img [src]="src" alt="faf">
+    </div>
+    <div [ng-if]="user">
+      <img [src]="'data:image/jpeg;base64,' + user.avatar.data" alt="faf">
+    </div>
+    
+    
+    <input type="text" [ngModel]="user.username" formControlName="username">
+    <div>
+      <button type="submit">Đăng</button>
+    </div>
+  </form>
   </div>
   

@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   imageUploadUrl: any = 'faf'
   image: Image = null
   fileToUpload: File = null;
-  src: any;
+  src: any = null
   user: User;
   
   constructor(private imageService : ImageService,
@@ -27,9 +27,8 @@ export class HomeComponent implements OnInit {
       username: new FormControl(),
       avatar: new FormControl()
     });
-    this.userService.getUserProfile(3).subscribe(res => {
+    this.userService.getUserProfile(5).subscribe(res => {
       this.user = res
-      console.log(this.user)
     }, err => {
       console.log(err)
     })
@@ -41,14 +40,12 @@ export class HomeComponent implements OnInit {
     reader.readAsDataURL(this.fileToUpload);    
       this.imageService.createImage(this.fileToUpload).subscribe(res => {
         this.src = reader.result
-        console.log(this.src)
         this.ProfileForm.get("avatar").setValue(res)
       }, (err) => {
         console.log(err)
       })
   }
   onSubmit(): void {
-    console.log(this.ProfileForm.value)
     this.userService.createUser(this.ProfileForm.value).subscribe(res => {
       console.log(res)
     }, err => {
