@@ -16,9 +16,9 @@ export class HomeComponent implements OnInit {
   imageUploadUrl: any = 'faf'
   image: Image = null
   fileToUpload: File = null;
-  src: any = null
   user: User;
-  
+  imgURL: any
+  listUser: User[] = []
   constructor(private imageService : ImageService,
               private userService: UserService) { }
 
@@ -27,29 +27,40 @@ export class HomeComponent implements OnInit {
       username: new FormControl(),
       avatar: new FormControl()
     });
-    this.userService.getUserProfile(5).subscribe(res => {
-      this.user = res
-    }, err => {
-      console.log(err)
-    })
+    // this.userService.getUserProfile(5).subscribe(res => {
+    //   this.user = res
+    // }, err => {
+    //   console.log(err)
+    // })
   }
   
-   uploadImage(files: FileList): void {
+   previewImage(files: FileList): void {
    this.fileToUpload = files.item(0)
    const reader = new FileReader();
-    reader.readAsDataURL(this.fileToUpload);    
-      this.imageService.createImage(this.fileToUpload).subscribe(res => {
-        this.src = reader.result
-        this.ProfileForm.get("avatar").setValue(res)
-      }, (err) => {
-        console.log(err)
-      })
+    reader.readAsDataURL(this.fileToUpload);
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+    }  
   }
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
+   await this.uploadImage();
     this.userService.createUser(this.ProfileForm.value).subscribe(res => {
-      console.log(res)
+      this.listUser.push(res)
+      this.ProfileForm.reset()
+      this.imgURL = null
     }, err => {
       console.log("err")
     })
+  }
+ async uploadImage(): Promise<void> {
+   return new Promise(resolve => {
+    this.imageService.createImage(this.fileToUpload).subscribe(res => {
+        this.ProfileForm.get("avatar").setValue(res)
+        resolve();
+      }, (err) => {
+        console.log(err)
+      })
+   })
+    
   }
   }

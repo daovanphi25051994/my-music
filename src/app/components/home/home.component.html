@@ -1,20 +1,37 @@
 <div>
   <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
-    <input type="file" (change)="uploadImage($event.target.files)">
-    <span>Ảnh</span>
-    <div [ng-if]="src">
-      gag
-      <img [src]="src" alt="faf">
-    </div>
-    <div [ng-if]="user">
-      <img [src]="'data:image/jpeg;base64,' + user.avatar.data" alt="faf">
+    <div>
+      <input type="file" (change)="previewImage($event.target.files)">
     </div>
     
+    <div *ngIf="imgURL">
+      <p>Có hình ảnh</p> 
+      <img [src]="imgURL" alt="#">
+    </div>
+    <!-- <div>
+      <img [src]="" alt="faf">
+    </div> -->
     
-    <input type="text" [ngModel]="user.username" formControlName="username">
+    <div>
+      <input type="text" formControlName="username">
+    </div>
     <div>
       <button type="submit">Đăng</button>
     </div>
   </form>
+  <div *ngFor=" let user of listUser">
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>USER NAME</th>
+        <th>AVATAR</th>
+      </tr>
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td><img [src]="'data:image/jpeg;base64,' + user.avatar.data" alt=""></td>
+      </tr>
+    </table>
+  </div>
   </div>
   
