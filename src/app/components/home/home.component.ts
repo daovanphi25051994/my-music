@@ -19,6 +19,7 @@ export class HomeComponent implements OnInit {
   user: User;
   imgURL: any
   listUser: User[] = []
+  data: string;
   constructor(private imageService : ImageService,
               private userService: UserService) { }
 
@@ -39,7 +40,14 @@ export class HomeComponent implements OnInit {
    const reader = new FileReader();
     reader.readAsDataURL(this.fileToUpload);
     reader.onload = (_event) => { 
+      this.data = reader.result.toString()
+    if(this.data.indexOf("data:image/") >= 0) {
       this.imgURL = reader.result; 
+    }
+    else {
+      this.imgURL = null; 
+    }
+      
     }  
   }
   async onSubmit(): Promise<void> {
