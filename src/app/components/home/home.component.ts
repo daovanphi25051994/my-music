@@ -14,7 +14,9 @@ export class HomeComponent implements OnInit {
 
   ProfileForm: FormGroup;
   fileToUpload: File = null;
+  listFileToUpload: File[] = [];
   imgURL: string;
+  listImgURL: string[] = [];
   listUser: User[] = [];
 
   constructor(private imageService : ImageService,
@@ -65,5 +67,19 @@ export class HomeComponent implements OnInit {
       })
    })
     
+  }
+  previewMultiImage(files: FileList) {
+    if(files.item(0).type.indexOf("image") >= 0){
+      this.listFileToUpload.push(files.item(0));
+      const reader = new FileReader();
+      reader.readAsDataURL(this.listFileToUpload[this.listFileToUpload.length - 1]);
+      reader.onload = (_event) => { 
+        this.listImgURL.push(reader.result.toString());  
+      }  
+     } else {
+       console.log("not image")
+     }
+     console.log(this.listImgURL)
+     console.log(this.listFileToUpload)
   }
   }

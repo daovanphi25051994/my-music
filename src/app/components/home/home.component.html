@@ -3,14 +3,23 @@
     <div>
       <input type="file" (change)="previewImage($event.target.files)">
     </div>
+
+    <div>
+      <input type="file" (change)="previewMultiImage($event.target.files)">
+    </div>
     
     <div *ngIf="imgURL">
       <p>Có hình ảnh</p> 
       <img [src]="imgURL" alt="#">
     </div>
-    <!-- <div>
-      <img [src]="" alt="faf">
-    </div> -->
+
+    <div *ngIf="listImgURL">
+      <p>Có list hình ảnh</p>
+      <div *ngFor="let imgURL of listImgURL">
+        <img [src]="imgURL" alt="#">
+      </div>
+      
+    </div>
     
     <div>
       <input type="text" formControlName="username">
