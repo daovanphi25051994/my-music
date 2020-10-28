@@ -36,19 +36,17 @@ export class HomeComponent implements OnInit {
   }
   
    previewImage(files: FileList): void {
-   this.fileToUpload = files.item(0)
-   const reader = new FileReader();
-    reader.readAsDataURL(this.fileToUpload);
-    reader.onload = (_event) => { 
-      this.data = reader.result.toString()
-    if(this.data.indexOf("data:image/") >= 0) {
-      this.imgURL = reader.result; 
-    }
-    else {
-      this.imgURL = null; 
-    }
-      
-    }  
+     if(files.item(0).type.indexOf("image") >= 0){
+      this.fileToUpload = files.item(0)
+      const reader = new FileReader();
+       reader.readAsDataURL(this.fileToUpload);
+       reader.onload = (_event) => { 
+         this.imgURL = reader.result; 
+       }  
+     } else {
+       console.log("not image")
+     }
+  
   }
   async onSubmit(): Promise<void> {
    await this.uploadImage();
