@@ -1,3 +1,4 @@
+import { CollectionImageService } from './../../service/collection-image.service';
 import { UserService } from './../../service/user.service';
 import { User } from './../../model/user';
 import { Image } from './../../model/image';
@@ -13,19 +14,28 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 export class HomeComponent implements OnInit {
 
   ProfileForm: FormGroup;
+  CollectionImageForm: FormGroup;
   fileToUpload: File = null;
   listFileToUpload: File[] = [];
-  imgURL: string;
+  imgURL: string = "";
   listImgURL: string[] = [];
   listUser: User[] = [];
+  audioURL: string;
+  listImageRes: Image[] = [];
 
   constructor(private imageService : ImageService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private collectionImage: CollectionImageService) { }
 
   ngOnInit(): void {
     this.ProfileForm = new FormGroup({
       username: new FormControl(),
-      avatar: new FormControl()
+      avatar: new FormControl(),
+      collectionImageList: new FormControl()
+    });
+    this.CollectionImageForm = new FormGroup({
+      title: new FormControl(),
+      listImage: new FormControl()
     });
     // this.userService.getUserProfile(5).subscribe(res => {
     //   this.user = res
@@ -50,9 +60,9 @@ export class HomeComponent implements OnInit {
   async onSubmit(): Promise<void> {
    await this.uploadImage();
     this.userService.createUser(this.ProfileForm.value).subscribe(res => {
-      this.listUser.push(res)
+      // this.listUser.push(res)
       this.ProfileForm.reset()
-      this.imgURL = null
+      this.imgURL = ""
     }, err => {
       console.log("err")
     })
@@ -79,7 +89,57 @@ export class HomeComponent implements OnInit {
      } else {
        console.log("not image")
      }
-     console.log(this.listImgURL)
-     console.log(this.listFileToUpload)
   }
+
+  async uploadMultiImage(): Promise<void> {
+    return new Promise(resolve => {
+     
+      for(let i = 0; i< this.listFileToUpload.length; i++) {
+        this.imageService.createImage(this.listFileToUpload[i]).subscribe(res => {
+          this.listImageRes.push(res);
+        }, (err) => {
+          console.log(err)
+        })
+      }
+      this.CollectionImageForm.get("listImage").setValue(this.listImageRes);
+      // console.log(this.CollectionImageForm.value)
+      resolve();
+    })
+     
+   }
+  // previewAudio(files: FileList) {
+  //   console.log(files)
+  //   if(files.item(0).type.indexOf("audio") >= 0){
+  //      this.fileToUpload = files.item(0)
+  //      const reader = new FileReader();
+  //      reader.readAsDataURL(this.fileToUpload);
+  //      reader.onload = (_event) => { 
+  //      this.audioURL = reader.result.toString(); 
+  //      }
+  //    } else {
+  //      console.log("not audio")
+  //    }
+  // }
+  // playAudio() {
+  //   let audio = new Audio();
+  //   audio.src = this.audioURL;
+  //   audio.load();
+  //   audio.play();
+  // }
+
+  async onSubmitCollectionImage() {
+    // console.log(this.listFileToUpload)
+    // console.log(this.CollectionImageForm.get("title").value)
+    // await this.uploadImage();
+    await this.uploadMultiImage();
+    // console.log(this.CollectionImageForm.value)
+    this.collectionImage.createCollection(this.CollectionImageForm.value).subscribe(res => {
+      this.CollectionImageForm.reset()
+      this.listImgURL = []
+    }, err => {
+      console.log("err")
+    })
+
+  }
+
   }
