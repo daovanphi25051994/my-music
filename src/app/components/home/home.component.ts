@@ -12,14 +12,11 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
-  ProfileForm: FormGroup
-  imageUploadUrl: any = 'faf'
-  image: Image = null
+  ProfileForm: FormGroup;
   fileToUpload: File = null;
-  user: User;
-  imgURL: any
-  listUser: User[] = []
-  data: string;
+  imgURL: string;
+  listUser: User[] = [];
+
   constructor(private imageService : ImageService,
               private userService: UserService) { }
 
@@ -41,7 +38,7 @@ export class HomeComponent implements OnInit {
       const reader = new FileReader();
        reader.readAsDataURL(this.fileToUpload);
        reader.onload = (_event) => { 
-         this.imgURL = reader.result; 
+         this.imgURL = reader.result.toString(); 
        }  
      } else {
        console.log("not image")
