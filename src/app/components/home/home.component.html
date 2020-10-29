@@ -1,35 +1,35 @@
 <div>
   <div class="row">
-    <div class="col-6">
-      <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">
-        <div>
-          <input type="file" (change)="previewImage($event.target.files)">
-        </div>
-    
+    <div class="col-4">
+<!--      <form [formGroup]="ProfileForm" (ngSubmit)="onSubmit()">-->
+<!--        <div>-->
+<!--          <input type="file" (change)="previewImage($event.target.files)">-->
+<!--        </div>-->
+
         <!-- <div>
           <input type="file" (change)="previewMultiImage($event.target.files)">
         </div> -->
-        
-        <div *ngIf="imgURL !== ''">
-          <p>Có hình ảnh</p> 
-          <img [src]="imgURL" alt="#">
-        </div>
-    
+
+<!--        <div *ngIf="imgURL !== ''">-->
+<!--          <p>Có hình ảnh</p> -->
+<!--          <img [src]="imgURL" alt="#">-->
+<!--        </div>-->
+
         <!-- <div *ngIf="listImgURL !==  []">
           <p>Có list hình ảnh</p>
           <div *ngFor="let imgURL of listImgURL">
             <img [src]="imgURL" alt="#">
           </div> -->
-          
+
         <!-- </div> -->
-        
-        <div>
-          <input type="text" formControlName="username">
-        </div>
-        <div>
-          <button type="submit">Đăng</button>
-        </div>
-      </form>
+
+<!--        <div>-->
+<!--          <input type="text" formControlName="username">-->
+<!--        </div>-->
+<!--        <div>-->
+<!--          <button type="submit">Đăng</button>-->
+<!--        </div>-->
+<!--      </form>-->
       <!-- <div *ngFor=" let user of listUser">
         <table>
           <tr>
@@ -54,13 +54,11 @@
 
 
 
-    <div class="col-6">
+    <div class="col-4">
       <h2>Create Collection Image</h2>
       <div>
-        <form [formGroup]="CollectionImageForm" (ngSubmit)="onSubmitCollectionImage()">
-          <div>
-            <input type="text" formControlName="title">
-          </div>
+        <form [formGroup]="CollectionImageForm" (ngSubmit)="uploadMultiImage()">
+
           <div>
             <input type="file" (change)="previewMultiImage($event.target.files)">
           </div>
@@ -69,18 +67,29 @@
             <div *ngFor="let imgURL of listImgURL">
               <img [src]="imgURL" alt="#">
             </div>
-            
           </div>
-          
-         
           <div>
-            <button type="submit">Create Collection</button>
+            <button type="submit">Create Collection Image</button>
           </div>
         </form>
       </div>
-     
+
+    </div>
+    <div class="col-4">
+      <h2>Play Sound</h2>
+      <form [formGroup]="AudioForm" (ngSubmit)="uploadAudio()">
+        <div>
+          <input type="file" (change)="previewAudio($event.target.files)">
+        </div>
+        <button (click)="openAudio()">Open</button>
+        <button (click)="pauseAudio()">Pause</button>
+        <button (click)="playAudio()">Play</button>
+        <div><button type="submit">Create Audio</button></div>
+      </form>
+
+
     </div>
   </div>
- 
+
   </div>
-  
+
